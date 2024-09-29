@@ -18,14 +18,6 @@ from numpy.linalg import inv # type: ignore
 #*         PROBLEMS         *
 #****************************
 
-# -----------------------------------------PUNTO 1-----------------------------------------
-# se define la ecuacion como y = x - tan(x)
-def f(x):
-    return x - math.tan(x)
-
-# Primera derivada de la funcion y'(x) = 1 - sec^2(x)
-def fDerivada(x):
-    return 1 - (1 / math.cos(x))**2
 
 def newton(funcion,derivada,x0, tol=1e-7, max_iter=1000):
     x = x0
@@ -55,14 +47,57 @@ def newton(funcion,derivada,x0, tol=1e-7, max_iter=1000):
     return None  
 
 
-# En el problema ofrecen dos posibles raices
+def newtonNoLineal(f1,f2,iteraciones,x0,y0):
+    x = sp.symbols('x')
+    y = sp.symbols('y')
+
+    # Derivadas parciales
+    f1_x = sp.diff(f1, x)
+    f1_y = sp.diff(f1, y)
+    f2_x = sp.diff(f2, x)
+    f2_y = sp.diff(f2, y)
+
+    # Hace que las funciones sean métodos numericos (funciones)
+    f1_numerica = sp.lambdify((x, y), f1, 'numpy')
+    f2_numerica = sp.lambdify((x, y), f2, 'numpy')
+    f1_x_numerica = sp.lambdify((x, y), f1_x, 'numpy')
+    f1_y_numerica = sp.lambdify((x, y), f1_y, 'numpy')
+    f2_x_numerica = sp.lambdify((x, y), f2_x, 'numpy')
+    f2_y_numerica = sp.lambdify((x, y), f2_y, 'numpy')
+
+    x_n = x0
+    y_n = y0
+
+    for i in range (iteraciones):
+        J = np.array([ [f1_x_numerica(x_n,y_n), f1_y_numerica(x_n,y_n)],
+                       [f2_x_numerica(x_n,y_n), f2_y_numerica(x_n,y_n)]
+                       ])
+        F = np.array([f1_numerica(x_n,y_n),f2_numerica(x_n,y_n)])
+        vectorSln = inv(J).dot(F)
+        x_n = vectorSln[0]
+        y_n = vectorSln[1]
+
+    print(f"Despues de {iteraciones} iteraciones el vector H equivale a: ({x_n} , {y_n})")
+
+
+
+# -----------------------------------------PUNTO 1-----------------------------------------
+
 def punto1():
+    # se define la ecuacion como y = x - tan(x)
+    def f(x):
+        return x - math.tan(x)
+
+    # Primera derivada de la funcion y'(x) = 1 - sec^2(x)
+    def fDerivada(x):
+        return 1 - (1 / math.cos(x))**2
+    
     iniciales = [4.5, 7.7]
     raices = []
 
     for posible in iniciales:
         try:
-            raiz = newton(posible)
+            raiz = newton(f,fDerivada,posible)
             raices.append(raiz)
         except ValueError as e:
             print(f"El método de Newton falla para la raiz: {posible}: {e}")
@@ -70,7 +105,8 @@ def punto1():
     print("Raices cerca de los valores iniciales:", raices)
 
 # -----------------------------------------PUNTO 2-----------------------------------------
-def encontrarNraices(n):
+def encontrarNraices(f,fDerivada,n):
+    
     raicesEncontradas = []
     posible = 4.5
     while len(raicesEncontradas) < n:
@@ -90,7 +126,14 @@ def encontrarNraices(n):
 
 # Muestra 10 raices de la funcion
 def punto2():
-    r = encontrarNraices(10)
+    # se define la ecuacion como y = x - tan(x)
+    def f(x):
+        return x - math.tan(x)
+    # Primera derivada de la funcion y'(x) = 1 - sec^2(x)
+    def fDerivada(x):
+        return 1 - (1 / math.cos(x))**2
+    
+    r = encontrarNraices(f,fDerivada,10)
     print(f"10 raices de x = tan(x) son: {r}")
 
 
@@ -175,38 +218,6 @@ def punto5():
 
 
 # -----------------------------------------PUNTO 13-----------------------------------------
-def newtonNoLineal(f1,f2,iteraciones,x0,y0):
-    x = sp.symbols('x')
-    y = sp.symbols('y')
-
-    # Derivadas parciales
-    f1_x = sp.diff(f1, x)
-    f1_y = sp.diff(f1, y)
-    f2_x = sp.diff(f2, x)
-    f2_y = sp.diff(f2, y)
-
-    # Hace que las funciones sean métodos numericos (funciones)
-    f1_numerica = sp.lambdify((x, y), f1, 'numpy')
-    f2_numerica = sp.lambdify((x, y), f2, 'numpy')
-    f1_x_numerica = sp.lambdify((x, y), f1_x, 'numpy')
-    f1_y_numerica = sp.lambdify((x, y), f1_y, 'numpy')
-    f2_x_numerica = sp.lambdify((x, y), f2_x, 'numpy')
-    f2_y_numerica = sp.lambdify((x, y), f2_y, 'numpy')
-
-    x_n = x0
-    y_n = y0
-
-    for i in range (iteraciones):
-        J = np.array([ [f1_x_numerica(x_n,y_n), f1_y_numerica(x_n,y_n)],
-                       [f2_x_numerica(x_n,y_n), f2_y_numerica(x_n,y_n)]
-                       ])
-        F = np.array([f1_numerica(x_n,y_n),f2_numerica(x_n,y_n)])
-        vectorSln = inv(J).dot(F)
-        x_n = vectorSln[0]
-        y_n = vectorSln[1]
-
-    print(f"Despues de {iteraciones} iteraciones el vector H equivale a: ({x_n} , {y_n})")
-
 def punto13():
 
     # Se necesita una variable simbolica para las derivadas
@@ -237,4 +248,3 @@ def punto14b():
     f2 = x**2 + 2*x*y - y**2 + sp.tan(x)
 
     newtonNoLineal(f1,f2,50,1,1)
-   
