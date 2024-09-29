@@ -12,7 +12,7 @@ En el codigo del archivo mainCode.py se encuentran funciones hechas segun el lib
 Los puntos realizados en este caso son, 1 - 2 - 3 - 4 - 5 - 13 - 14
 
 ## Uso de funciones
-El codigo por si mismo no inicia ningun punto por si solo.
+El codigo no inicia ningun punto por si mismo, se debe ejecutar manualmente.
 
 
 La manera correcta de ejecutarlo es usando funciones de python, se usa añadiendo la palabra "punto" seguido del numero a revisar:
