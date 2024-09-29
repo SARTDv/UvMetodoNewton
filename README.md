@@ -3,7 +3,7 @@ Computer Problems 3.2 sln
 
 # COMPUTER PROBLEMS 3.2
 ## Informacion básica
-**Nota: el código está hecho en python con 2 librerias externas, instalar antes de usar**
+**Nota: el código está hecho en python con 2 librerias externas(numpy / sympy), instalar antes de usar**
 
 
 En el codigo del archivo mainCode.py se encuentran funciones hechas segun el libro "Numerical Analysis"
