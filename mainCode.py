@@ -1,5 +1,13 @@
-import math
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Integrantes: 
+#            Alejandro Muñoz - 2242951
+#            Bayron Jojoa - 2242917
+#            Ricardo Erazo - 2242117
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+import math
 # Estas librerias deben estar instaladas, si no no va a funcionar
 import numpy as np # type: ignore 
 import sympy as sp # type: ignore 
